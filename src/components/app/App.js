@@ -1,8 +1,11 @@
 import './App.scss';
 
 
-import AppHeader from '../app-header/AppHeader';;
-import Randomchar from '../randomchar/Randomchar';
+import AppHeader from '../appHeader/AppHeader';
+import Randomchar from '../randomChar/RandomChar';
+
+import CharContent from '../charContent/CharContent';
+
 
 function App() {
   return (
@@ -12,6 +15,9 @@ function App() {
       <main>
         <AppHeader></AppHeader>
         <Randomchar></Randomchar>
+
+        <CharContent></CharContent>
+        <img className="bg-decoration" src="../../img/vision.png" alt="vision"></img>
       </main>
       </div>
 

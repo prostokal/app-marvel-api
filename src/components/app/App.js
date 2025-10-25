@@ -12,8 +12,8 @@ function App() {
     <div className="app">
 
       <div className="container">
-      <main>
         <AppHeader></AppHeader>
+      <main>
         <Randomchar></Randomchar>
 
         <CharContent></CharContent>

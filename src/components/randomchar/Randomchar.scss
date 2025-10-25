@@ -11,6 +11,9 @@
         display: grid;
         grid-template-columns: 180px auto;
         column-gap: 30px;
+        transition: 0.5s all;
+        animation: .9s show cubic-bezier(0.13, 0, 0.31, 1.02);
+        
     }
     &__img {
         width: 180px;

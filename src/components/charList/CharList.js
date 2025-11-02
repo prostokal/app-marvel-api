@@ -14,36 +14,57 @@ class CharList extends Component {
         charList: [],
         loading: true,
         error: false,
+        offset: 0,
+        charEnded: false,
+        newItemsLoading: false
     }
-    marverService = new MarvelService();
-    onCharListLoaded = (charList) => {
-        this.setState({
-            charList: charList,
-            loading: false
 
+    marverService = new MarvelService();
+    
+    componentDidMount() {
+        this.onRequest();
+    }
+
+
+    onRequest = (offset) => {
+        this.onCharListLoading();
+        this.marverService.getAllCharacters(offset)
+        .then(this.onCharListLoaded)
+        .catch(this.onError);
+    }
+    onCharListLoading = () => {
+        this.setState({
+            newItemsLoading: true
         })
     }
+    onCharListLoaded = (newCharList) => {
+        let ended = false
+        if (newCharList.length < 9) {
+            ended = true
+        }
+        this.setState(({charList, offset}) => ({
+            charList: [...charList, ...newCharList],
+            loading: false,
+            offset: offset + 9,
+            charEnded: ended,
+            newItemsLoading: false
+        }))
+    }
+
     onError = () => {
         this.setState({
             loading: false,
             error: true
         })
     }
-    updateCharList = () => {
-        this.marverService.getAllCharacters()
-        .then(this.onCharListLoaded)
-        .catch(this.onError);
-    }
-    componentDidMount() {
-        this.updateCharList();
-    }
 
     renderChars() {
-        const {charList, activeChar} = this.state
-        let charItems = []
-                charItems = charList.map((item) => {
+        const {charList} = this.state;
+        const {changeActiveChar, charId} = this.props;
+
+                let charItems = charList.map((item) => {
                     return (
-                        <li className={activeChar == item.id ? "char__item char__item_active" : 'char__item'} key={item.id}>
+                        <li onClick={() => changeActiveChar(item.id)} className={charId === item.id ? "char__item char__item_selected" : 'char__item'} key={item.id}>
                             <img src={item.thumbnail} alt={item.name} onError={(e) => {e.target.src = imgNotFound; e.target.style = 'object-fit: fill'}}/>
                             <div className="char__name">{item.name}</div>
                         </li>
@@ -51,14 +72,14 @@ class CharList extends Component {
                 })
         return (
             <ul className="char__grid">
-                    {
-                        charItems
-                    }
+                {
+                    charItems
+                }
             </ul>
         )
     }
     render() {
-        const {loading, error} = this.state;
+        const {loading, error, charEnded,offset, newItemsLoading} = this.state;
         
         const items = this.renderChars();
 
@@ -70,7 +91,12 @@ class CharList extends Component {
                 {spinner}
                 {content}
                 {errorMessage}
-                {!errorMessage ? <button className="button button__main button__long">
+                {!errorMessage ? <button 
+                onClick={() => this.onRequest(offset)} 
+                className="button button__main button__long"
+                style={{'display': `${charEnded ? 'none' : 'block'}`}}
+                disabled={newItemsLoading}
+                >
                     <div className="inner">load more</div>
                 </button>: null}
             </div>

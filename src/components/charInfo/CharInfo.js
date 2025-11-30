@@ -122,4 +122,5 @@ class View extends Component {
         )
     }
 }
+
 export default CharInfo

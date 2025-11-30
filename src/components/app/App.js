@@ -18,7 +18,8 @@ function App() {
               <Randomchar></Randomchar>
             </ErrorBoundary>
 
-            <CharContent></CharContent>
+            <CharContent>
+            </CharContent>
 
           <img className="bg-decoration" src={vision} alt="vision"></img>
         </main>

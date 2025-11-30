@@ -11,26 +11,29 @@ class  CharContent extends Component {
     
     state = {
         charId: null
-    }
+    } 
     
-    changeActiveCharState = (id) => {
-        this.setState({
-            charId: id
-        })
+    
+
+    onCharSelected = (id) => {
+            this.setState({
+                charId: id
+            })
     }
 
 
 
     render() {
-
+        const {charId} = this.state
         return (
             <div className="char__content">
                 <ErrorBoundary>
-                    <CharList charId={this.state.charId} changeActiveChar={this.changeActiveCharState}></CharList>
+                    <CharList onCharSelected={this.onCharSelected}>
+                    </CharList>
                 </ErrorBoundary>
 
                 <ErrorBoundary>
-                    <CharInfo charId={this.state.charId}></CharInfo>
+                    <CharInfo charId={charId}></CharInfo>
                 </ErrorBoundary>
                 
             </div>

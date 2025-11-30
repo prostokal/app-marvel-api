@@ -6,8 +6,8 @@ import { Component } from 'react';
 import imgNotFound from '../../resources/img/imgNotFound.jpeg';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import './CharList.scss';
-import Spinner from '../spinner/Spinner';
 
+import Spinner from '../spinner/Spinner';
 
 class CharList extends Component {
     state = {
@@ -58,13 +58,25 @@ class CharList extends Component {
         })
     }
 
+    itemRefs = [];
+
+    setRef = (ref) => {
+        this.itemRefs.push(ref);
+    }
+    focusOnItem = (id) => {
+        
+        this.itemRefs.forEach(item => item.classList.remove('char__item_selected'));
+        this.itemRefs[id].classList.add('char__item_selected');
+        this.itemRefs[id].focus();
+    }
+
     renderChars() {
         const {charList} = this.state;
-        const {changeActiveChar, charId} = this.props;
+        const {onCharSelected} = this.props;
 
-                let charItems = charList.map((item) => {
+                let charItems = charList.map((item, i) => {
                     return (
-                        <li onClick={() => changeActiveChar(item.id)} className={charId === item.id ? "char__item char__item_selected" : 'char__item'} key={item.id}>
+                        <li  ref={this.setRef} onKeyDown={(e) => {if (e.code == 'Space' || e.code == 'Enter') {e.preventDefault(); onCharSelected(item.id); this.focusOnItem(i)}}} onClick={() => {onCharSelected(item.id); this.focusOnItem(i);}} tabIndex='0' className={'char__item'} key={item.id}>
                             <img src={item.thumbnail} alt={item.name} onError={(e) => {e.target.src = imgNotFound; e.target.style = 'object-fit: fill'}}/>
                             <div className="char__name">{item.name}</div>
                         </li>
@@ -103,4 +115,5 @@ class CharList extends Component {
         )
     }
 }
+
 export default CharList;

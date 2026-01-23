@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 
 import CharList from '../charList/CharList';
 import CharInfo from '../charInfo/CharInfo';
@@ -7,38 +7,30 @@ import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 
 import './CharContent.scss';
 
-class  CharContent extends Component {
+const CharContent = () => {
     
-    state = {
-        charId: null
-    } 
+    const [charId, setCharId] = useState(null);
     
     
 
-    onCharSelected = (id) => {
-            this.setState({
-                charId: id
-            })
+    const onCharSelected = (id) => {
+        setCharId(id);
     }
 
+    return (
+        <div className="char__content">
+            <ErrorBoundary>
+                <CharList onCharSelected={onCharSelected}>
+                </CharList>
+            </ErrorBoundary>
 
+            <ErrorBoundary>
+                <CharInfo charId={charId}></CharInfo>
+            </ErrorBoundary>
+            
+        </div>
+    )
 
-    render() {
-        const {charId} = this.state
-        return (
-            <div className="char__content">
-                <ErrorBoundary>
-                    <CharList onCharSelected={this.onCharSelected}>
-                    </CharList>
-                </ErrorBoundary>
-
-                <ErrorBoundary>
-                    <CharInfo charId={charId}></CharInfo>
-                </ErrorBoundary>
-                
-            </div>
-        )
-    }
 }
 
 export default CharContent

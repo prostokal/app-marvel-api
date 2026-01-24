@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
@@ -10,87 +10,79 @@ import mjolnir from "../../resources/img/mjolnir.png"
 import imgNotFound from "../../resources/img/imgNotFound.jpeg"
 
 
-class Randomchar extends Component {
-    state = {
-        char: {},
-        loading: true,
-        error: false,
-        thumbnailDestroy: false
-    }
+const Randomchar = () => {
     
-    marverService = new MarvelService();
-    componentDidMount() {
-        this.updateChar();
+    const [char, setChar] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+    const [thumbnailDestroy, setThumbnailDestroy] = useState(false);
+
+    const marverService = new MarvelService();
+
+    useEffect(() => {
+        updateChar();
+    }, [])
+
+    // componentDidMount() {
+        // updateChar();
         // this.timerId = setInterval(this.updateChar, 3000)
+    // }
+    // componentWillUnmount() {
+    //     clearInterval(this.timerId);
+    // }
+    const onError = () => {
+        setLoading(false);
+        setError(true);
     }
-    componentWillUnmount() {
-        clearInterval(this.timerId);
-    }
-    onError = () => {
-        this.setState({
-            loading: false,
-            error: true
-        })
-    }
-    onCharLoading = () => {
-        this.setState({
-            loading: true,
-        })
+    const onCharLoading = () => {
+        setLoading(true);
     }
 
-    onCharLoaded = (char) => {
-        this.setState({
-            char, 
-            loading: false,
-            thumbnailDestroy: false,
-        })
+    const onCharLoaded = (char) => {
+        setChar(char);
+        setLoading(false);
+        setThumbnailDestroy(false);
     }
 
    
-    updateChar = () => {
+    const updateChar = () => {
         const id = Math.ceil(Math.random() * 20)
-        this.onCharLoading()
-        this.marverService
+        onCharLoading()
+        marverService
             .getCharacter(id)
-            .then(this.onCharLoaded)
-            .catch(this.onError);
+            .then(onCharLoaded)
+            .catch(onError);
     }
     
-    changeImageState = (bool) => {
-        this.setState({
-            thumbnailDestroy: bool
-        })
+    const changeImageState = (bool) => {
+        setThumbnailDestroy(bool);
     }
+    const errorMessage = error ? <ErrorMessage/> : null;
+    const spinner = loading ? <Spinner/> : null;
+    const content = !(loading || error) ? <View char={char} thumbnailDestroy={thumbnailDestroy} imageChangeState={changeImageState}/> : null;
 
-    render() {
-        const {char, loading, error, thumbnailDestroy} = this.state;
+    return (
+        <div className="randomchar">
+                {errorMessage}
+                {spinner}
+                {content}
 
-        const errorMessage = error ? <ErrorMessage/> : null;
-        const spinner = loading ? <Spinner/> : null;
-        const content = !(loading || error) ? <View char={char} thumbnailDestroy={thumbnailDestroy} imageChangeState={this.changeImageState}/> : null;
-
-        return (
-            <div className="randomchar">
-                    {errorMessage}
-                    {spinner}
-                    {content}
-
-                    <div className="randomchar__static">
-                        <p className="randomchar__title">
-                            Random character for today!<br/>
-                            Do you want to get to know him better?
-                        </p>
-                        <p className="randomchar__title">
-                            Or choose another one
-                        </p>
-                        <button onClick={() => this.updateChar()} className="button button__main">
-                            <div className="inner">try it</div>
-                        </button>
-                        <img src={mjolnir} alt="mjolnir" className="randomchar__decoration"/>
-                    </div>
-            </div>
-        )
-    }
+                <div className="randomchar__static">
+                    <p className="randomchar__title">
+                        Random character for today!<br/>
+                        Do you want to get to know him better?
+                    </p>
+                    <p className="randomchar__title">
+                        Or choose another one
+                    </p>
+                    <button onClick={() => updateChar()} className="button button__main">
+                        <div className="inner">try it</div>
+                    </button>
+                    <img src={mjolnir} alt="mjolnir" className="randomchar__decoration"/>
+                </div>
+        </div>
+    )
+    
 }
 const View = ({char, thumbnailDestroy,imageChangeState }) => {
     const {name, description, thumbnail, homepage, wiki} = char;

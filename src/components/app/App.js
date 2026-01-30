@@ -15,7 +15,7 @@ function App() {
           <AppHeader></AppHeader>
         <main>
             <ErrorBoundary>
-              <Randomchar></Randomchar>
+              <Randomchar/>
             </ErrorBoundary>
 
             <CharContent>

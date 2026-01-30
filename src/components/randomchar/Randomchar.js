@@ -1,23 +1,21 @@
 import { useState, useEffect } from 'react';
 
-import Spinner from '../spinner/Spinner';
-import ErrorMessage from '../errorMessage/ErrorMessage';
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 
 import './RandomChar.scss';
 
+import ErrorMessage from '../errorMessage/ErrorMessage';
 import mjolnir from "../../resources/img/mjolnir.png"
+import Spinner from '../spinner/Spinner';
 import imgNotFound from "../../resources/img/imgNotFound.jpeg"
 
 
 const Randomchar = () => {
     
     const [char, setChar] = useState({});
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
+    const {loading, error, getCharacter, clearError} = useMarvelService();
     const [thumbnailDestroy, setThumbnailDestroy] = useState(false);
 
-    const marverService = new MarvelService();
 
     useEffect(() => {
         updateChar();
@@ -30,36 +28,25 @@ const Randomchar = () => {
     // componentWillUnmount() {
     //     clearInterval(this.timerId);
     // }
-    const onError = () => {
-        setLoading(false);
-        setError(true);
-    }
-    const onCharLoading = () => {
-        setLoading(true);
-    }
+
 
     const onCharLoaded = (char) => {
         setChar(char);
-        setLoading(false);
         setThumbnailDestroy(false);
     }
 
    
     const updateChar = () => {
+        clearError();
         const id = Math.ceil(Math.random() * 20)
-        onCharLoading()
-        marverService
-            .getCharacter(id)
+        getCharacter(id)
             .then(onCharLoaded)
-            .catch(onError);
+
     }
-    
-    const changeImageState = (bool) => {
-        setThumbnailDestroy(bool);
-    }
+
     const errorMessage = error ? <ErrorMessage/> : null;
     const spinner = loading ? <Spinner/> : null;
-    const content = !(loading || error) ? <View char={char} thumbnailDestroy={thumbnailDestroy} imageChangeState={changeImageState}/> : null;
+    const content = !(loading || error) ? <View char={char} thumbnailDestroy={thumbnailDestroy} setThumbnailDestroy={setThumbnailDestroy}/> : null;
 
     return (
         <div className="randomchar">
@@ -75,7 +62,7 @@ const Randomchar = () => {
                     <p className="randomchar__title">
                         Or choose another one
                     </p>
-                    <button onClick={() => updateChar()} className="button button__main">
+                    <button onClick={updateChar} className="button button__main">
                         <div className="inner">try it</div>
                     </button>
                     <img src={mjolnir} alt="mjolnir" className="randomchar__decoration"/>
@@ -84,7 +71,7 @@ const Randomchar = () => {
     )
     
 }
-const View = ({char, thumbnailDestroy,imageChangeState }) => {
+const View = ({char, thumbnailDestroy,setThumbnailDestroy }) => {
     const {name, description, thumbnail, homepage, wiki} = char;
     return (
         <div className="randomchar__block" key={name}>
@@ -93,7 +80,7 @@ const View = ({char, thumbnailDestroy,imageChangeState }) => {
             style={{objectFit: `${thumbnailDestroy ? 'fill' : 'cover'}`}}
             alt="Random character"
             className="randomchar__img"
-            onError={() => imageChangeState(true)}
+            onError={() => setThumbnailDestroy(true)}
             />
               
             <div className="randomchar__info">

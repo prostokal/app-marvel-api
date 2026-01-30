@@ -1,34 +1,27 @@
 
+import {useHttp} from '../hooks/http.hook'; 
 
+const useMarvelService = () => {
+    const {loading, error, request, clearError} = useHttp();
+    
+    const _apiBase = 'https://marvel-server-zeta.vercel.app/';
+    const _apiKey = 'apikey=d4eecb0c66dedbfae4eab45d312fc1df';
+    const _baseOffset = 0;
 
-class MarvelService {
-    _apiBase = 'https://marvel-server-zeta.vercel.app/';
-    _apiKey = 'apikey=d4eecb0c66dedbfae4eab45d312fc1df';
-    _baseOffset = 0;
-
-     getResource = async (url) => {
-        let res = await fetch(url);
-
-        if (!res.ok) {
-            throw new Error(`Could not fetch ${url}, ${res.status}`)
-        }
-
-        return await res.json(); 
+    const getAllCharacters = async (offset = _baseOffset) => {
+        const res = await request(`${_apiBase}characters?limit=9&offset=${offset}&${_apiKey}`);
+        return res.data.results.map(_transformCharacter)
     }
 
-    getAllCharacters = async (offset = this._baseOffset) => {
-        const res = await this.getResource(`${this._apiBase}characters?limit=9&offset=${offset}&${this._apiKey}`);
-        return res.data.results.map(this._transformCharacter)
-    }
-    getCharacter = async (id=0) => {
-        const res = await this.getResource(`${this._apiBase}characters/${id}?${this._apiKey}`);
-        return this._transformCharacter(res.data.results[0]);
+    const getCharacter = async (id=0) => {
+        const res = await request(`${_apiBase}characters/${id}?${_apiKey}`);
+        return _transformCharacter(res.data.results[0]);
     }
 
-    _transformCharacter = (character) => {
+    const _transformCharacter = (character) => {
         return {
             name: character.name,
-            description: character.description ? `${character.description.length > 150 ? character.description.slice(0,150) + '...' : character.description}` : 'There is currently no description for this character ;(',
+            description: character.description ? `${character.description.length > 150 ? character.description.slice(0,150) + '...' : character.description}` : 'There is currently no description for character ;(',
             thumbnail: character.thumbnail.path + '.' + character.thumbnail.extension,
             homepage: character.urls[0].url,
             wiki: character.urls[1].url,
@@ -36,6 +29,8 @@ class MarvelService {
             id: character.id
         }
     }
+
+    return {loading, error, getAllCharacters, getCharacter, clearError}
 }
 
-export default MarvelService
+export default useMarvelService;

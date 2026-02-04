@@ -4,9 +4,9 @@ import useMarvelService from '../../services/MarvelService';
 import { useState, useEffect, useRef} from 'react';
 
 import imgNotFound from '../../resources/img/imgNotFound.jpeg';
-import ErrorMessage from '../errorMessage/ErrorMessage';
 import './CharList.scss';
 
+import ErrorMessage from '../errorMessage/ErrorMessage';
 import Spinner from '../spinner/Spinner';
 
 const CharList = (props) => {
@@ -83,14 +83,14 @@ const CharList = (props) => {
                 {errorMessage}
                 {spinner}
                 {items}
-                {!errorMessage ? <button 
+                {!errorMessage ? <button
                 onClick={() => onRequest(offset)} 
                 className="button button__main button__long"
                 style={{'display': `${charEnded ? 'none' : 'block'}`}}
                 disabled={newItemLoading}
                 >
                     <div className="inner">load more</div>
-                </button>: null}
+                </button> : null}
             </div>
         )
 }

@@ -16,6 +16,15 @@ const useMarvelService = () => {
     const getCharacter = async (id=0) => {
         const res = await request(`${_apiBase}characters/${id}?${_apiKey}`);
         return _transformCharacter(res.data.results[0]);
+    }   
+
+    const getAllComics = async (offset = _baseOffset) => {
+        const res = await request(`${_apiBase}comics?limit=8&offset=${offset}&${_apiKey}`);
+        return res.data.results.map(_transformComics);
+    }
+    const getComic = async (id=0) => {
+        const res = await request(`${_apiBase}comics/${id}?${_apiKey}`);
+        return _transformComics(res.data.results[0]);
     }
 
     const _transformCharacter = (character) => {
@@ -29,8 +38,19 @@ const useMarvelService = () => {
             id: character.id
         }
     }
+     const _transformComics = (character) => {
+        return {
+            title: character.title,
+            description: character.description ? `${character.description.length > 150 ? character.description.slice(0,150) + '...' : character.description}` : 'There is currently no description for character ;(',
+            thumbnail: character.thumbnail.path + '.' + character.thumbnail.extension,
+            price: character.prices[0].price,
+            pageCount: character.pageCount,
+            language: character.textObjects.languages,
+            id: character.id
+        }
+    }
 
-    return {loading, error, getAllCharacters, getCharacter, clearError}
+    return {loading, error, getAllCharacters, getCharacter, getAllComics, getComic, clearError}
 }
 
 export default useMarvelService;

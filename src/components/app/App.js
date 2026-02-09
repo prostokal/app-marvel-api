@@ -1,41 +1,41 @@
 import './App.scss';
 
-import { useState } from 'react';
-
-import AppHeader from '../appHeader/AppHeader';
-import CharContent from '../charContent/CharContent';
-import Randomchar from '../randomChar/RandomChar';
-import AppBanner from '../appBanner/AppBanner';
-import ComicsList from '../comicsList/ComicsList';
-import ErrorBoundary from '../errorBoundary/ErrorBoundary';
-
-
-
-function App() {
-  const {selectedChar, setChar} = useState('char');
   
+import AppHeader from '../appHeader/AppHeader';
+
+import {MainPage, ComicsPage} from '../pages';
+
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+
+
+
+
+
+function App() {  
   
   return (
-    <div className="app">
+    <Router>
+      <div className="app">
 
-      <div className="container">
-        <AppHeader selectedChar={selectedChar} setChar={setChar}></AppHeader>
-        
-        <ErrorBoundary>
-          <AppBanner></AppBanner>
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <ComicsList></ComicsList>
-        </ErrorBoundary>
-      {/* <main>
-      <ErrorBoundary><Randomchar/></ErrorBoundary>
-      <CharContent/> 
-      <img className="bg-decoration" src={vision} alt="vision"></img>
-      </main> */}
+        <div className="container">
+          <AppHeader></AppHeader>
+          <main>
+            <Switch>
+              <Route exact path="/">
+                <MainPage/>
+              </Route>
+
+              <Route exact path="/comics">
+
+                <ComicsPage/>
+
+              </Route>
+            </Switch>
+
+          </main>
         </div>
-      
-
-    </div>
+      </div>
+    </Router>
   );
 }
 

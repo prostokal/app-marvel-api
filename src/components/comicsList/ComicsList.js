@@ -21,11 +21,11 @@ const ComicsList = () => {
 
     
     useEffect(() => {
-        onRequest(offset);
+        onRequest(offset, true);
     }, [])
     
     const onRequest = (offset, initial) => {
-        // initial ? setNewItemLoading(false) : setNewItemLoading(true) 
+        initial ? setNewItemLoading(false) : setNewItemLoading(true) 
         getAllComics(offset)
             .then(onComicsListLoaded)
     }
@@ -70,7 +70,7 @@ const ComicsList = () => {
     
     const items = renderComics();
     const errorMessage = error ? <ErrorMessage/> : null;
-    const spiner = loading ? <Spinner/> : null;
+    const spiner = loading && !newItemLoading ? <Spinner/> : null;
     
 
     return (

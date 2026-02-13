@@ -5,7 +5,7 @@ import AppHeader from '../appHeader/AppHeader';
 
 import {MainPage, ComicsPage} from '../pages';
 
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 
 
@@ -18,19 +18,15 @@ function App() {
       <div className="app">
 
         <div className="container">
-          <AppHeader></AppHeader>
+          <AppHeader/>
           <main>
-            <Switch>
-              <Route exact path="/">
-                <MainPage/>
+
+            <Routes>
+              <Route path="/" element={<MainPage/>}/>
+              <Route path="/comics" element={<ComicsPage/>}>
+                
               </Route>
-
-              <Route exact path="/comics">
-
-                <ComicsPage/>
-
-              </Route>
-            </Switch>
+            </Routes>
 
           </main>
         </div>

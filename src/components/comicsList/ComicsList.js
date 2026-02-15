@@ -1,16 +1,16 @@
-import './comicsList.scss';
-import useMarvelService from '../../services/MarvelService';
 
+import { useState, useEffect} from 'react';
+import { Link } from 'react-router-dom';
+
+import useMarvelService from '../../services/MarvelService';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Spinner from '../spinner/Spinner';
 
-import SingleComic from '../singleComic/SingleComic';
 
-import { useState, useEffect} from 'react';
+import './comicsList.scss';
 
 const ComicsList = () => {
     
-    const [activeComic, setActiveComic] = useState(null);
 
     const [comicsList, setComicsList] = useState([]);
     const [offset, setOffset] = useState(0);
@@ -42,26 +42,16 @@ const ComicsList = () => {
         setComicsEnded(comicsEnded => ended);
     }
 
-    const resetActiveComic = () => {
-        setActiveComic(null);
-    }
-
     const renderComics = () => {
-        
-        if (activeComic) {
-            return (
-                <SingleComic comicId={activeComic} resetActiveComic={resetActiveComic}></SingleComic>
-            )
-        }
 
-        const items = comicsList.map((comics, i) => {
+        const items = comicsList.map((comic, i) => {
             return (
-                <li key={comics.id} onClick={(e) => {e.preventDefault(); setActiveComic(comics.id)}} className="comics__item">
-                    <a href="#">
-                        <img src={comics.thumbnail} alt="ultimate war" className="comics__item-img"/>
-                        <div className="comics__item-name">{comics.title}</div>
-                        <div className="comics__item-price">{comics.price}$</div>
-                    </a>
+                <li key={comic.id} onClick={(e) => {e.preventDefault();}} className="comics__item">
+                    <Link to={`/comics/${comic.id}`}>
+                        <img src={comic.thumbnail} alt="ultimate war" className="comics__item-img"/>
+                        <div className="comics__item-name">{comic.title}</div>
+                        <div className="comics__item-price">{comic.price}$</div>
+                    </Link>
                 </li>
             )
         })
@@ -75,13 +65,12 @@ const ComicsList = () => {
 
     return (
         <div className="comics__list">
-            <ul style={{display: `${activeComic ? 'block' : 'grid'}`}} className="comics__grid">
+            <ul style={{display: 'grid'}} className="comics__grid">
                 {items}
             </ul>
                 {errorMessage}
                 {spiner}
             {
-            !activeComic ?    
              <button
             style={{'display': `${comicsEnded ? 'none' : 'block'}`}}
             className="button button__main button__long" 
@@ -89,7 +78,7 @@ const ComicsList = () => {
             disabled={newItemLoading || errorMessage}
             >
                 <div className="inner">load more</div>
-            </button> : null
+            </button>
             }
         </div>
     )

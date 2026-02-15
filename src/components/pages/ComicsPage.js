@@ -13,6 +13,7 @@ const ComicsPage = () => {
             <ErrorBoundary>
                 <ComicsList></ComicsList>
             </ErrorBoundary>
+
         </>
     )
 }

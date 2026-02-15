@@ -1,20 +1,23 @@
-import './singleComic.scss';
+import './singleComicPage.scss';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import { useEffect, useState } from 'react';
 
+import {useParams, Link} from 'react-router-dom';
+
 import useMarvelService from '../../services/MarvelService';
 
-const SingleComic = (props) => {
+const SingleComicPage = () => {
 
-    const {loading, error,getComic, clearError} = useMarvelService();
+    const {loading, error, getComic, clearError} = useMarvelService();
 
-    const [comic, setComic] = useState(false);
+    const [comic, setComic] = useState(null);
+    const {comicId} = useParams();
 
     useEffect(() => {
         updateComic();
-    }, [props.comicId])
+    }, [comicId])
 
     
     const onComicLoaded = (comic) => {
@@ -22,11 +25,6 @@ const SingleComic = (props) => {
     }
 
     const updateComic = () => {
-        const {comicId} = props;
-        if (!comicId) {
-            return;
-        }
-
         clearError();
         getComic(comicId)
             .then(onComicLoaded)
@@ -40,26 +38,26 @@ const SingleComic = (props) => {
             <div className="single-comic__info">
                 <h2 className="single-comic__name">{comic.title}</h2>
                 <p className="single-comic__descr">{comic.description}</p>
-                <p className="single-comic__descr">{comic.pageCount} pages</p>
+                <p className="single-comic__descr">{comic.pageCount}</p>
                 <p className="single-comic__descr">Language: {comic.language}</p>
                 <div className="single-comic__price">{comic.price}$</div>
             </div>
-            <a href="#" onClick={props.resetActiveComic} className="single-comic__back">Back to all</a>
+            <Link  to="/comics" className="single-comic__back">Back to all</Link>
         </div>
         )
     }
     
-    const errorMessage = error ? <ErrorMessage/> : null;
+    const errorMessage = error ? <> <ErrorMessage/> <div style={{textAlign: 'center', 'marginTop': '10px'}} ><Link style={{fontSize: '21px', fontWeight: 'bold'}} to='/comics'>back to comics</Link></div> </> : null;
     const spinner = loading ? <Spinner/> : null;
     const content = !(errorMessage || spinner || !comic) ? <View comic={comic}/> : null;
     return (
         <>
-        {content}
-        {errorMessage}
-        {spinner}
+            {errorMessage}
+            {spinner}
+            {content}
         </>
         
     )
 }
 
-export default SingleComic;
+export default SingleComicPage;

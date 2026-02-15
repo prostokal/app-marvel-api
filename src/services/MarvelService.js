@@ -9,7 +9,9 @@ const useMarvelService = () => {
     const _baseOffset = 0;
 
     const getAllCharacters = async (offset = _baseOffset) => {
-        const res = await request(`${_apiBase}characters?limit=9&offset=${offset}&${_apiKey}`);
+        const res = await request(
+            `${_apiBase}characters?limit=9&offset=${offset}&${_apiKey}`
+        );
         return res.data.results.map(_transformCharacter)
     }
 
@@ -28,6 +30,7 @@ const useMarvelService = () => {
     }
 
     const _transformCharacter = (character) => {
+
         return {
             name: character.name,
             description: character.description ? `${character.description.length > 150 ? character.description.slice(0,150) + '...' : character.description}` : 'There is currently no description for character ;(',
@@ -43,9 +46,9 @@ const useMarvelService = () => {
             title: character.title,
             description: character.description ? `${character.description.length > 150 ? character.description.slice(0,150) + '...' : character.description}` : 'There is currently no description for character ;(',
             thumbnail: character.thumbnail.path + '.' + character.thumbnail.extension,
-            price: character.prices[0].price,
-            pageCount: character.pageCount,
-            language: character.textObjects.languages,
+            price: character.prices[0].price || 'not available',
+            pageCount: `${character.pageCount} pages`,
+            language: character.textObjects.languages || 'en-us',
             id: character.id
         }
     }

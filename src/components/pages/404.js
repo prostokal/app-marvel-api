@@ -1,5 +1,5 @@
 import notFound from '../../resources/img/imgNotFound.jpeg'
-
+import {Link} from 'react-router-dom'
 
 const Page404 = () => {
     return (
@@ -8,6 +8,7 @@ const Page404 = () => {
                 <img src={notFound} alt="notFound" />
             </div>
             <p style={{fontSize: '29px',marginTop: '10px', fontWeight: 'bold', color: '#000000ff'}} className="notFound-descr">Somethink went wrong.</p>
+            <Link style={{color: 'black',fontWeight: 'bold', fontSize: '21px'}} to='/' >Back to main page</Link>
         </div>
     )
 }

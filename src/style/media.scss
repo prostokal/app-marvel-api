@@ -8,15 +8,98 @@
     .container {
         max-width: 960px;
     }
+    .randomchar {
+        &__descr {
+            overflow: hidden;
+        }
+        a {
+            min-width: 40px;
+            max-width: 100px;
+        }
+    }
+    .char {
+        &__grid {
+            grid-template-columns: repeat(2, 200px);
+            column-gap: 40px;
+        }
+        &__content {
+            justify-content: space-between;
+            grid-template-columns: 0.8fr 425px;
+        }
+    }
 }
 @media (max-width: 992px) {
     .container {
         max-width: 720px;
     }
+    .app .bg-decoration {
+        right: 30px;
+        width: 350px;
+        bottom: 0;
+    }
+    .randomchar {
+        align-items: start;
+        &__block {
+            align-items: center;
+            padding: 15px 8px;
+            column-gap: 15px;
+        }
+        &__static {
+            padding: 15px 8px;
+        }
+        &__title {
+            font-size: 22px;
+        }
+        &__decoration {
+            width: 155px;
+            height: 155px;
+            bottom: 0px;
+        }
+        &__info {
+            padding-top: 0;
+            grid-template-rows: minmax(29px, auto) auto 76px;
+        }
+        &__name {
+            font-size: 19px;
+        }
+        &__descr {
+            font-size: 13px;
+        }
+        &__btns {
+            a {
+                width: 100px;
+                &:first-child {
+                    margin-right: 0;
+                    margin-bottom: 2px;
+                }
+            }
+        }
+    }
+    .char {
+        &__grid {
+            grid-template-columns: repeat(2, 180px);
+            column-gap: 20px;
+            row-gap: 15px;
+        }
+        &__item {
+            width: 180px;
+            height: 290px;
+            img {
+                width: 180px;
+                height: 180px;
+            }
+        }
+        &__content {
+            grid-template-columns: 1fr 310px;
+        }
+        &__info {
+            padding: 12px;
+        }
+    }
 }
 @media (max-width: 768px) {
     .container {
-        max-width: 540px;
+        max-width: 574px;
     }
 }
 @media (max-width: 576px) {

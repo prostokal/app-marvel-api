@@ -75,13 +75,15 @@ const View = (props) => {
                 <div className="char__descr">
                     {description}
                 </div>
-                <div className="char__comics">Comics:</div>
+                <div className="char__comics">Comis:</div>
                 <ul className="char__comics-list">
                     {
                        comics.length > 0 ? comics.map((item, i) => {
                             return (
-                                <li key={i} className="char__comics-item">
-                                    {item}
+                                <li  key={i} className="char__comics-item">
+                                    <a href="#">
+                                        {item}
+                                    </a>
                                 </li>
                             )
                         }).slice(0, 9) : "Now this character don't have comics"

@@ -9,7 +9,6 @@ import mjolnir from "../../resources/img/mjolnir.png"
 import Spinner from '../spinner/Spinner';
 import imgNotFound from "../../resources/img/imgNotFound.jpeg"
 
-
 const Randomchar = () => {
     
     const [char, setChar] = useState({});

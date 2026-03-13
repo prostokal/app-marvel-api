@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom/client';
 
 import './style/index.scss';
 import './style/_variables.scss';
-import './style/media.scss';
 import './style/button.scss';
+import './style/media.scss';
 
 
 import App from './components/app/App';

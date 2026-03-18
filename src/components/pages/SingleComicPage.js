@@ -33,7 +33,7 @@ const SingleComicPage = () => {
     const View = ({comic}) => {
         
         return (
-        <div className="single-comic">
+        <section className="single-comic">
             <img src={comic.thumbnail} alt={comic.title} className="single-comic__img"/>
             <div className="single-comic__info">
                 <h2 className="single-comic__name">{comic.title}</h2>
@@ -43,7 +43,7 @@ const SingleComicPage = () => {
                 <div className="single-comic__price">{comic.price}$</div>
             </div>
             <Link  to="/comics" className="single-comic__back">Back to all</Link>
-        </div>
+        </section>
         )
     }
     

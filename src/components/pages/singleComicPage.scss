@@ -3,7 +3,7 @@
 .single-comic {
     margin-top: 50px;
     display: grid;
-    grid-template-columns: 293px 550px auto;
+    grid-template-columns: 293px 1fr auto;
     column-gap: 50px;
     align-items: start;
     &__img {
@@ -37,3 +37,4 @@
         }
     }
 }
+@import '../../style/media.scss';

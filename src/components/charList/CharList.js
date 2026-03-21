@@ -56,8 +56,8 @@ const CharList = (props) => {
                     ref={el => itemRefs.current[i] = el } 
                     onKeyDown={(e) => {if (e.code == 'Space' || e.code == 'Enter') {e.preventDefault(); onCharSelected(item.id); focusOnItem(i)}}} 
                     onClick={() => {onCharSelected(item.id); focusOnItem(i);}}
-                    tabIndex='0' 
-                    className={'char__item'} 
+                    tabIndex='0'
+                    className={'char__item'}
                     key={item.id}>
                     <img 
                     src={item.thumbnail} 
@@ -81,8 +81,8 @@ const CharList = (props) => {
         return (
             <div className="char__list">
                 {errorMessage}
-                {spinner}
                 {items}
+                {spinner}
                 {!errorMessage ? <button
                 onClick={() => onRequest(offset)} 
                 className="button button__main button__long"

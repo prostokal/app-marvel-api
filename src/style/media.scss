@@ -274,10 +274,11 @@
         // &__info {
         // }
         &__grid {
-            justify-content: center;
+            justify-content: space-between;
 
             grid-template-columns: repeat(auto-fill, 140px);
             column-gap: 19px;
+            row-gap: 33px;
         }
         &__item {
             width: 140px;

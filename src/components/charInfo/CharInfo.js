@@ -12,6 +12,7 @@ const CharInfo = (props) => {
 
     const [char, setChar] = useState(false);
 
+
     const {loading, error, clearError, getCharacter} = useMarvelService();
     
     useEffect(() => {
@@ -34,7 +35,9 @@ const CharInfo = (props) => {
     const onCharLoaded = (char) => {
         setChar(char);
     }
-           
+    
+
+
     const skeleton = char || error || loading ? null : <Skeleton/>;
     const errorMessage = error ? <ErrorMessage/> : null;
     const spinner = loading ? <Spinner/> : null;
